@@ -20,9 +20,9 @@ Figura 1: Diagrama de Processo.
 Para a realização da aplicação, foram criados três ramos, um para definir o impacto ambiental provocado pela produção (fornecedores), um para definir o impacto ambiental provocado pelo transporte (transportadoras) e um último para definir a escolha do consumidor (Continente do CC Colombo). 
 
 No caso dos ramos fornecedores e transportadoras, cada um tem uma aplicação que calcula o impacto ambiental, uma apliação de teste que verifica que o cálculo está correto e um ficheiro csv que contém os dados usados para a construção da aplicação do ramo. 
-No caso do ramo consumidor final, este tem a aplicação onde o consumidor pode fazer a sua encomenda, figura 2: 
+No caso do ramo consumidor_final, este tem a aplicação onde o consumidor pode fazer a sua encomenda, figura 2: 
 
-Figura 2: Documentos dos ramos fornecedores, transportadoras e consumidor final. 
+Figura 2: Documentos dos ramos fornecedores, transportadoras e consumidor_final. 
 
 ![image](https://github.com/user-attachments/assets/cc429229-abd9-4daf-9d53-f67675ee4eaa)
 
