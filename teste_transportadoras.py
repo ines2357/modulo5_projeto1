@@ -5,7 +5,7 @@ def somar_pontuacoes_por_transportadora_origem():
     #Dicionário para armazenar a soma total das pontuações por transportadora e origem do percurso
     pontuacoes_por_transportadora_origem = collections.defaultdict(lambda: 0)
     
-    # Ler o ficheiro CSV com delimitador ";"
+    # Ler o ficheiro CSV com delimitador ","
     with open('transportadoras.csv', newline='', encoding='utf-8') as file:
         reader = csv.reader(file, delimiter=',')  # Define "," como delimitador
         next(reader)  #Ignorar cabeçalho
