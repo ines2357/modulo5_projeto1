@@ -1,4 +1,5 @@
 def escolher_produto():
+    
     produtos_disponiveis = ['Arroz', 'Trigo', 'Milho', 'Cevada']
 
     print("Produtos disponíveis para encomenda:")
@@ -8,6 +9,7 @@ def escolher_produto():
     opcao_produto = int(input("Escolha o número do produto desejado: "))
     produto_nome = produtos_disponiveis[opcao_produto - 1]
 
+    
     
     return produto_nome
 
