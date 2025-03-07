@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Escolher Produto</title>
+</head>
+<body>
+    <h1>Escolha um Produto</h1>
+    <form action="/escolher_produto" method="POST">
+        <label for="produto_nome">Selecione um produto:</label>
+        <select name="produto_nome" id="produto_nome">
+            {% for produto in produtos %}
+                <option value="{{ produto }}">{{ produto }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Escolher Produto</button>
+    </form>
+</body>
+</html>
