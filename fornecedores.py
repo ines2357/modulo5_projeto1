@@ -1,15 +1,26 @@
 import csv
+import collections
 
-def fornecedores_impacto():
-    with open('fornecedores_final.csv', newline='', encoding='utf-8') as file:
-        reader = csv.reader(file)
+def somar_pontuacoes_por_produto_localizacao():
+    # Dicionário para armazenar a soma total das pontuações por produto e localização
+    pontuacoes_por_produto_localizacao = collections.defaultdict(lambda: 0)
     
-        print("Calculando impacto ambiental...\n--------------------------------")
+    # Ler o ficheiro CSV
+    with open('fornecedores.csv', newline='', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        next(reader)  # Ignorar cabeçalho
+        
         for row in reader:
-            localizacao, produto, score_agua, score_eletricidade, score_combustiveis, score_desperdicio, score_contaminacao, score_emissoes, score_final = row[0], row[1], row[2], row[3], row[4], row [5], row[6], row[7], row[8]
-            print(f"Localização: {localizacao} | Produto: {produto} | Consumo de água: {score_agua} | Consumo de eletricidade: {score_eletricidade} | Combustível máq. agrícolas: {score_combustiveis} | Desperdício alimentar: {score_desperdicio} | Contaminação dos solos: {score_contaminacao} | Emissões Co2: {score_emissoes}")
-            print(f"Localização: {localizacao} | Produto: {produto} | Pontuação de impacto ambiental do fornecedor: {score_final}")
-        print("--------------------------------")
+            localizacao = row[0]
+            produto = row[1]
+            chave = (produto, localizacao)
+            pontuacao_total = sum(map(int, row[2:]))  # Somar todas as pontuações
+            
+            # Acumular a soma total
+            pontuacoes_por_produto_localizacao[chave] += pontuacao_total
+    
+    return pontuacoes_por_produto_localizacao
 
-if __name__ == "__main__":
-    fornecedores_impacto()
+
+
+
