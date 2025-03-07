@@ -7,7 +7,7 @@ def somar_pontuacoes_por_transportadora_origem():
     
     # Ler o ficheiro CSV com delimitador ";"
     with open('transportadoras.csv', newline='', encoding='utf-8') as file:
-        reader = csv.reader(file, delimiter=';')  # Define ";" como delimitador
+        reader = csv.reader(file, delimiter=',')  # Define "," como delimitador
         next(reader)  #Ignorar cabeçalho
         
         for row in reader:
