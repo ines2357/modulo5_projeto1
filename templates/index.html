@@ -3,18 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escolher Produto</title>
+    <title>Escolha do Produto e Relatório de Impacto Ambiental</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1, h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .impacto { margin-top: 20px; padding: 10px; background-color: #e0f7fa; }
+    </style>
 </head>
 <body>
     <h1>Escolha um Produto</h1>
-    <form action="/escolher_produto" method="POST">
+
+    <!-- Formulário para escolher o produto -->
+    <form action="/" method="POST">
         <label for="produto_nome">Selecione um produto:</label>
         <select name="produto_nome" id="produto_nome">
             {% for produto in produtos %}
-                <option value="{{ produto }}">{{ produto }}</option>
+                <option value="{{ produto }}" {% if produto == produto_escolhido %}selected{% endif %}>{{ produto }}</option>
             {% endfor %}
         </select>
         <button type="submit">Escolher Produto</button>
     </form>
+
+    {% if produto_escolhido %}
+        <!-- Exibição impacto ambiental do produto escolhido -->
+        <div class="impacto">
+            <h2>Impacto Ambiental do Produto: {{ produto_escolhido }}</h2>
+
+            {% if impacto_resultado %}
+                <p><strong>Localização com menor impacto:</strong> {{ impacto_resultado[0] }}</p>
+                <p><strong>Impacto total:</strong> {{ impacto_resultado[1] }}</p>
+            {% else %}
+                <p>Nenhum impacto encontrado para este produto.</p>
+            {% endif %}
+        </div>
+
+        <!-- Relatório geral dos produtos -->
+        <hr>
+        <h2>Relatório de Produtos</h2>
+
+        <h3>Novos Produtos Detectados</h3>
+        {% if novos_produtos %}
+            <ul>
+                {% for produto in novos_produtos %}
+                    <li>{{ produto }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Nenhum novo produto detectado.</p>
+        {% endif %}
+
+        <h3>Soma Total dos Recursos e Poluição</h3>
+        <table>
+            <tr>
+                <th>Produto</th>
+                <th>Localização</th>
+                <th>Recursos</th>
+                <th>Poluição</th>
+            </tr>
+            {% for (produto, localizacao), valores in pontuacoes.items() %}
+            <tr>
+                <td>{{ produto }}</td>
+                <td>{{ localizacao }}</td>
+                <td>{{ '%.2f' % valores['recursos'] }}</td>
+                <td>{{ '%.2f' % valores['poluicao'] }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+
 </body>
 </html>
