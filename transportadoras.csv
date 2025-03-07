@@ -1,5 +1,4 @@
-Origem Percurso Transportadora  Distância Percorrida (Km)       Combustível/km (L/km)   Combustível Total (L)   CO2 emitido/km  Emissões Totais (kg CO2)        Destino
-Torres Vedras   A       52,7    0,2     10,54   2,1     110,67  Continente Colombo
-Campo Maior     B       229     0,143   32,75   2,36    540,44  Continente Colombo
-Alcácer do Sal  C       95,5    0,133   12,7    1,98    189,09  Continente Colombo
-
+﻿origem_percurso;transportadora;distancia_percorrida_km;score_combustivel;score_emissoes
+Torres Vedras;A;52,7;1;1
+Campo Maior;B;229;5;5
+Alcácer do Sal;C;95,5;2;2
