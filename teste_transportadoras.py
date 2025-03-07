@@ -1,27 +1,37 @@
-import pandas as pd
+import csv
+import collections
 
-def calcular_impacto_transporte():
-    origem = input("Origem do transporte: ")
+def somar_pontuacoes_por_transportadora_origem():
+    #Dicionário para armazenar a soma total das pontuações por transportadora e origem do percurso
+    pontuacoes_por_transportadora_origem = collections.defaultdict(lambda: 0)
     
-    df = pd.read_excel('transportadoras.xlsx', sheet_name='transportadoras')
-    
-    for _, row in df.iterrows():
-        if row['Origem'] == origem:
-            origem, distancia, combustivel, co2 = (
-                row['Origem'],
-                float(row['Distância Percorrida (Km)']),
-                float(row['Combustível Total (L)']),
-                float(row['Emissões Totais (kg CO2)'])
-            )
+    # Ler o ficheiro CSV com delimitador ";"
+    with open('transportadoras.csv', newline='', encoding='utf-8') as file:
+        reader = csv.reader(file, delimiter=';')  # Define ";" como delimitador
+        next(reader)  #Ignorar cabeçalho
+        
+        for row in reader:
+            origem_percurso = row[0]
+            transportadora = row[1]
+            chave = (transportadora, origem_percurso)
             
-            print("\n Impacto Ambiental do Transporte")
-            print(f"Origem: {origem}")
-            print(f"Distância: {distancia} km")
-            print(f"Combustível total consumido: {combustivel:.2f} L")
-            print(f"CO₂ total emitido: {co2:.2f} kg")
-            return
+            #Converter os valores numéricos corretamente
+            score_combustivel = int(row[3])  # Coluna 'score_combustivel'
+            score_emissoes = int(row[4])     # Coluna 'score_emissoes'
+            pontuacao_total = score_combustivel + score_emissoes  # Somar os scores relevantes
+            
+            #Fazer a soma total
+            pontuacoes_por_transportadora_origem[chave] += pontuacao_total
     
-    print("\n Origem não encontrada!")
+    return pontuacoes_por_transportadora_origem
 
 if __name__ == "__main__":
-    calcular_impacto_transporte()
+    resultados = somar_pontuacoes_por_transportadora_origem()
+    print("Resultados de pontuação por transportadora e origem do percurso:")
+    print("-" * 80)
+    for (transportadora, origem_percurso), pontuacao in resultados.items():
+        print(f"Transportadora: {transportadora} | Origem: {origem_percurso} | Pontuação total: {pontuacao}")
+
+
+
+                                                                                                                                                                                  
