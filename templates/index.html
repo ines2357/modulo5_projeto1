@@ -11,13 +11,14 @@
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f4f4f4; }
         .impacto { margin-top: 20px; padding: 10px; background-color: #e0f7fa; }
+        .resumo { margin-top: 20px; padding: 10px; background-color: #f3f3f3; }
     </style>
 </head>
 <body>
     <h1>Escolha um Produto</h1>
 
     <!-- Formulário para escolher o produto -->
-    <form action="/" method="POST">
+    <form action="/escolher_produto" method="POST">
         <label for="produto_nome">Selecione um produto:</label>
         <select name="produto_nome" id="produto_nome">
             {% for produto in produtos %}
@@ -32,47 +33,39 @@
         <div class="impacto">
             <h2>Impacto Ambiental do Produto: {{ produto_escolhido }}</h2>
 
-            {% if impacto_resultado %}
-                <p><strong>Localização com menor impacto:</strong> {{ impacto_resultado[0] }}</p>
-                <p><strong>Impacto total:</strong> {{ impacto_resultado[1] }}</p>
+            {% if menor_impacto %}
+                <p><strong>Localização com menor impacto:</strong> {{ menor_impacto[0] }}</p>
+                <p><strong>Impacto total:</strong> {{ menor_impacto[1] }}</p>
             {% else %}
                 <p>Nenhum impacto encontrado para este produto.</p>
             {% endif %}
         </div>
 
-        <!-- Relatório geral dos produtos -->
+        <!-- Relatório geral dos impactos -->
         <hr>
-        <h2>Relatório de Produtos</h2>
+        <div class="resumo">
+            <h3>Resumo dos Impactos Ambientais</h3>
+            <p><strong>Total de impacto dos fornecedores:</strong> {{ resumo_impactos['fornecedores'] }}</p>
+            <p><strong>Total de impacto dos transportes:</strong> {{ resumo_impactos['transportes'] }}</p>
+        </div>
 
-        <h3>Novos Produtos Detectados</h3>
-        {% if novos_produtos %}
-            <ul>
-                {% for produto in novos_produtos %}
-                    <li>{{ produto }}</li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Nenhum novo produto detectado.</p>
-        {% endif %}
-
-        <h3>Soma Total dos Recursos e Poluição</h3>
+        <!-- Relatório geral dos impactos por localizações -->
+        <hr>
+        <h2>Impactos por Localização</h2>
         <table>
             <tr>
-                <th>Produto</th>
                 <th>Localização</th>
-                <th>Recursos</th>
-                <th>Poluição</th>
+                <th>Impacto Total</th>
             </tr>
-            {% for (produto, localizacao), valores in pontuacoes.items() %}
+            {% for localizacao, impacto in impactos %}
             <tr>
-                <td>{{ produto }}</td>
                 <td>{{ localizacao }}</td>
-                <td>{{ '%.2f' % valores['recursos'] }}</td>
-                <td>{{ '%.2f' % valores['poluicao'] }}</td>
+                <td>{{ '%.2f' % impacto }}</td>
             </tr>
             {% endfor %}
         </table>
     {% endif %}
-
 </body>
 </html>
+
+

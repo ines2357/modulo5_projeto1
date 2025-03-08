@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado de Impacto Ambiental</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1, h2 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f4f4f4; }
+        .impacto { margin-top: 20px; padding: 10px; background-color: #e0f7fa; }
+        .resumo { margin-top: 20px; padding: 10px; background-color: #f3f3f3; }
+    </style>
+</head>
+<body>
+    <h1>Resultado do Impacto Ambiental</h1>
+
+    <h2>Produto: {{ produto }}</h2>
+
+    <div class="impacto">
+        <h3>Impacto Ambiental Total</h3>
+        {% if menor_impacto %}
+            <p><strong>Localização com menor impacto:</strong> {{ menor_impacto[0] }}</p>
+            <p><strong>Impacto total:</strong> {{ menor_impacto[1] }}</p>
+        {% else %}
+            <p>Nenhum impacto encontrado para este produto.</p>
+        {% endif %}
+    </div>
+
+    <hr>
+
+    <h2>Impactos por Localização</h2>
+    <table>
+        <tr>
+            <th>Localização</th>
+            <th>Impacto Total</th>
+        </tr>
+        {% for localizacao, impacto in impactos %}
+        <tr>
+            <td>{{ localizacao }}</td>
+            <td>{{ '%.2f' % impacto }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <hr>
+
+    <div class="resumo">
+        <h3>Resumo dos Impactos Ambientais</h3>
+        <p><strong>Total de impacto dos fornecedores:</strong> {{ resumo_impactos['fornecedores'] }}</p>
+        <p><strong>Total de impacto dos transportes:</strong> {{ resumo_impactos['transportes'] }}</p>
+    </div>
+
+    <br>
+    <a href="/">Voltar à escolha de produto</a>
+</body>
+</html>
+
+
+
