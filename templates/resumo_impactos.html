@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resumo de Impactos</title>
     <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
+        body { font-family: Arial, sans-serif; margin: 40px; min-height: 100vh;}
         table {
             width: 80%;
             border-collapse: collapse;
@@ -25,23 +25,21 @@
         .linha-transportadora {
             background-color: #fff3e0;
         }
-
+        
         footer { 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
             padding: 10px 0; 
             background-color: #f4f4f4; 
             text-align: center; 
             font-size: 14px; 
             color: #555; 
             border-top: 1px solid #ddd;
+            margin-top: auto;
         }
 
         .content {
-            min-height: 100%; 
-            padding-bottom: 50px; 
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
         }
     </style>
 
@@ -54,7 +52,9 @@
     <div class="d-flex justify-content-center align-items-start" style="height: 100vh; padding-top: 50px;">
         <div class="container">
             <h1>Resumo de Impactos</h1>
-            
+
+            <p>A tabela seguinte apresenta os fatores relativos à produção e transporte de produtos que apresentam efeitos nefastos para o ambiente.</p>
+            <p>Para determinar o impacto ambiental, utilizou-se uma escala de 1 a 5 para cada categoria, tendo em conta os impactos mínimos e máximos observados em cada uma delas.</p>
             <table>
                 <thead>
                     <tr>
@@ -84,16 +84,16 @@
                 
                     {% for linha in dados_resumo %}
                     <tr>
-                        <td>{{ linha.produto }}</td>
-                        <td>{{ linha.localizacao }}</td>
-                        <td>{{ linha.score_agua }}</td>
-                        <td>{{ linha.score_eletricidade }}</td>
-                        <td>{{ linha.score_combustiveis_fornecedor }}</td>
-                        <td>{{ linha.score_desperdicio }}</td>
-                        <td>{{ linha.score_contaminacao }}</td>
-                        <td>{{ linha.score_emissoes }}</td>
-                        <td>{{ linha.score_combustiveis_transportadora }}</td>
-                        <td>{{ linha.score_emissoes_transportadora }}</td>
+                        <td style="text-align: center;">{{ linha.produto }}</td>
+                        <td style="text-align: center;">{{ linha.localizacao }}</td>
+                        <td style="text-align: center;">{{ linha.score_agua }}</td>
+                        <td style="text-align: center;">{{ linha.score_eletricidade }}</td>
+                        <td style="text-align: center;">{{ linha.score_combustiveis_fornecedor }}</td>
+                        <td style="text-align: center;">{{ linha.score_desperdicio }}</td>
+                        <td style="text-align: center;">{{ linha.score_contaminacao }}</td>
+                        <td style="text-align: center;">{{ linha.score_emissoes }}</td>
+                        <td style="text-align: center;">{{ linha.score_combustiveis_transportadora }}</td>
+                        <td style="text-align: center;">{{ linha.score_emissoes_transportadora }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

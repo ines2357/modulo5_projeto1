@@ -16,24 +16,20 @@ def escolher_produto():
     produto_nome = request.form['produto_nome']
     produto_nome = consumidor.escolher_produto(produto_nome)
     
-    # Decompõe corretamente a tupla retornada pelas funções
     pontuacoes_por_produto_localizacao, scores_fornecedores = fornecedores.somar_pontuacoes_por_produto_localizacao()
     pontuacoes_por_transportadora_origem, scores_transportadoras = transportadoras.somar_pontuacoes_por_transportadora_origem()
 
-    # Se você precisar das pontuações totais, use pontuacoes_por_produto_localizacao
     impactos_fornecedores = [
         (localizacao, pontuacao) 
         for (produto, localizacao), pontuacao in pontuacoes_por_produto_localizacao.items() 
         if produto == produto_nome
     ]
     
-    # Calcula os impactos das transportadoras
     impactos_transportadoras = [
         (origem_percurso, pontuacao) 
         for (transportadora, origem_percurso), pontuacao in pontuacoes_por_transportadora_origem.items()
     ]
     
-    # Calculando o impacto total
     impactos_totais = []
     for (localizacao, impacto_fornecedor) in impactos_fornecedores:
         impacto_transporte = next(
@@ -43,7 +39,6 @@ def escolher_produto():
         impacto_total = impacto_fornecedor + impacto_transporte
         impactos_totais.append((localizacao, impacto_total))
 
-    # Encontrar o menor impacto
     menor_impacto = min(impactos_totais, key=lambda x: x[1])
     localizacao_menor_impacto, impacto_total = menor_impacto
 
@@ -57,45 +52,30 @@ def escolher_produto():
 
 @app.route('/resumo_impactos')
 def resumo_impactos():
-   
-    pontuacoes_por_produto_localizacao = fornecedores.somar_pontuacoes_por_produto_localizacao()
-    pontuacoes_por_transportadora_origem = transportadoras.somar_pontuacoes_por_transportadora_origem()
-
-   
-    print("Pontuações por produto e localização:")
-    print(pontuacoes_por_produto_localizacao)
-
-    print("Pontuações por transportadora e origem:")
-    print(pontuacoes_por_transportadora_origem)
-
-    pontuacoes_por_produto_localizacao_dict = dict(pontuacoes_por_produto_localizacao)
-    pontuacoes_por_transportadora_origem_dict = dict(pontuacoes_por_transportadora_origem)
-
-    print("Pontuações por produto e localização (convertidas em dicionário):")
-    print(pontuacoes_por_produto_localizacao_dict)
-
-    print("Pontuações por transportadora e origem (convertidas em dicionário):")
-    print(pontuacoes_por_transportadora_origem_dict)
+    pontuacoes_por_produto_localizacao, scores_fornecedores = fornecedores.somar_pontuacoes_por_produto_localizacao()
+    pontuacoes_por_transportadora_origem, scores_transportadoras = transportadoras.somar_pontuacoes_por_transportadora_origem()
 
     dados_resumo = []
 
-    for (localizacao, produto), pontuacao in pontuacoes_por_produto_localizacao_dict.items():
+    for (produto, localizacao), pontuacao in scores_fornecedores.items():
         
-        score_agua = pontuacao.get('score_agua', 0) if isinstance(pontuacao, dict) else 0
-        score_eletricidade = pontuacao.get('score_eletricidade', 0) if isinstance(pontuacao, dict) else 0
-        score_combustiveis = pontuacao.get('score_combustiveis', 0) if isinstance(pontuacao, dict) else 0
-        score_desperdicio = pontuacao.get('score_desperdicio', 0) if isinstance(pontuacao, dict) else 0
-        score_contaminacao = pontuacao.get('score_contaminacao', 0) if isinstance(pontuacao, dict) else 0
-        score_emissoes = pontuacao.get('score_emissoes', 0) if isinstance(pontuacao, dict) else 0
+        score_agua = pontuacao[0] if len(pontuacao) > 0 else 0
+        score_eletricidade = pontuacao[1] if len(pontuacao) > 1 else 0
+        score_combustiveis = pontuacao[2] if len(pontuacao) > 2 else 0
+        score_desperdicio = pontuacao[3] if len(pontuacao) > 3 else 0
+        score_contaminacao = pontuacao[4] if len(pontuacao) > 4 else 0
+        score_emissoes = pontuacao[5] if len(pontuacao) > 5 else 0
 
         transportadora_data = next(
-            (data for (origem_percurso, transportadora), data in pontuacoes_por_transportadora_origem_dict.items() if origem_percurso == localizacao),
+            (data for (transportadora, origem), data in scores_transportadoras.items() if origem == localizacao),
             None
         )
 
+
         if transportadora_data:
-            score_combustivel = transportadora_data.get('score_combustivel', 0)
-            score_emissoes_transporte = transportadora_data.get('score_emissoes', 0)
+         
+            score_combustivel = transportadora_data[0] if len(transportadora_data) > 0 else 0
+            score_emissoes_transporte = transportadora_data[1] if len(transportadora_data) > 1 else 0
         else:
             score_combustivel = 0
             score_emissoes_transporte = 0
@@ -111,10 +91,8 @@ def resumo_impactos():
             'score_emissoes': score_emissoes,
             'score_combustiveis_transportadora': score_combustivel,
             'score_emissoes_transportadora': score_emissoes_transporte
-           
-})
+        })
 
- 
     return render_template('resumo_impactos.html', dados_resumo=dados_resumo)
 
 

@@ -7,16 +7,12 @@
     <style>
         body { font-family: Arial, sans-serif; margin: 40px; }
         h1, h2 { color: #333; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        table { width: 25%; border-collapse: collapse; margin-top: 20px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f4f4f4; }
         .impacto { margin-top: 20px; padding: 10px; background-color: #e0f7fa; }
         .resumo { margin-top: 20px; padding: 10px; background-color: #f3f3f3; }
         footer { 
-            position: fixed; 
-            bottom: 0; 
-            left: 0; 
-            width: 100%; 
             padding: 10px 0; 
             background-color: #f4f4f4; 
             text-align: center; 
@@ -26,8 +22,9 @@
         }
 
         .content {
-            min-height: 100%; 
-            padding-bottom: 50px; 
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
         }
     </style>
     
@@ -44,6 +41,7 @@
 
             <div class="impacto">
                 <h3>Impacto Ambiental Total</h3>
+                <p>O resultado obtido corresponde à localização cujo impacto ambiental de produção e posterior transporte do produto escolhido apresenta um menor valor.</p>
                 {% if menor_impacto %}
                     <p><strong>Localização com menor impacto:</strong> {{ menor_impacto[0] }}</p>
                     <p><strong>Impacto total:</strong> {{ menor_impacto[1] }}</p>
@@ -55,21 +53,22 @@
             <hr>
 
             <h2>Impactos por Localização</h2>
+            <p>A tabela seguinte mostra as alternativas para o produto escolhido e os respetivos impactos ambientais.</p>
             <table>
                 <tr>
-                    <th>Localização</th>
-                    <th>Impacto Total</th>
+                    <th style="text-align: center;">Localização</th>
+                    <th style="text-align: center;">Impacto Total</th>
                 </tr>
                 {% for localizacao, impacto in impactos %}
                 <tr>
-                    <td>{{ localizacao }}</td>
-                    <td>{{ impacto | round(0) }}</td>
+                    <td style="text-align: center;">{{ localizacao }}</td>
+                    <td style="text-align: center;">{{ impacto | round(0) }}</td>
                 </tr>
                 {% endfor %}
             </table>
 
             <br>
-            
+            <p>Caso queira obter os dados relativos aos diferentes impactos ambientais parciais e não somente totais, por favor volte à página inicial e clique em Resumo Completo dos Impactos Ambientais.</p>
             <p><a href="/">Voltar à página inicial</a></p>
         </div>
     </div>
