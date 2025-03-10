@@ -101,11 +101,14 @@ def resumo_impactos():
  
     return render_template('resumo_impactos.html', dados_resumo=dados_resumo)
 
+
 @app.route('/historico')
 def historico():
-  
+    # Caminho relativo para garantir que o arquivo está na pasta modulo5_projeto1
+    caminho_arquivo = './modulo5_projeto1/historico_de_escolhas.txt'
+    
     try:
-        with open("historico_de_escolhas.txt", "r") as arquivo:
+        with open(caminho_arquivo, "r") as arquivo:
             escolhas = arquivo.readlines()
     except FileNotFoundError:
         escolhas = []
@@ -114,5 +117,6 @@ def historico():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
