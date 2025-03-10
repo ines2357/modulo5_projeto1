@@ -1,14 +1,18 @@
-def escolher_produto():
-    
-    produtos_disponiveis = ['Arroz', 'Trigo', 'Milho', 'Cevada']
+import datetime
 
-    print("Produtos disponíveis para encomenda:")
-    for i, produto in enumerate(produtos_disponiveis, 1):
-        print(f"{i}. {produto}")
+def registrar_escolha(produto_nome):
+    with open("historico_de_escolhas.txt", "a") as arquivo:
+        arquivo.write(f"{datetime.datetime.now()}: {produto_nome}\n")
+
+
+def escolher_produto(produto_nome):
+    produtos_disponiveis = ['Arroz', 'Trigo', 'Milho', 'Cevada']
     
-    opcao_produto = int(input("Escolha o número do produto desejado: "))
-    produto_nome = produtos_disponiveis[opcao_produto - 1]
+    if produto_nome not in produtos_disponiveis:
+        raise ValueError(f"Produto '{produto_nome}' não é válido.")
     
+    registrar_escolha(produto_nome)
+
     return produto_nome
 
 
