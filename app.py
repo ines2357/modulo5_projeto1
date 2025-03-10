@@ -14,22 +14,36 @@ def index():
 @app.route('/escolher_produto', methods=['POST'])
 def escolher_produto():
     produto_nome = request.form['produto_nome']
-    produto_nome = consumidor.escolher_produto(produto_nome) 
+    produto_nome = consumidor.escolher_produto(produto_nome)
     
-    
-    pontuacoes_por_produto_localizacao = fornecedores.somar_pontuacoes_por_produto_localizacao()
-    pontuacoes_por_transportadora_origem = transportadoras.somar_pontuacoes_por_transportadora_origem()
+    # Decompõe corretamente a tupla retornada pelas funções
+    pontuacoes_por_produto_localizacao, scores_fornecedores = fornecedores.somar_pontuacoes_por_produto_localizacao()
+    pontuacoes_por_transportadora_origem, scores_transportadoras = transportadoras.somar_pontuacoes_por_transportadora_origem()
 
-    impactos_fornecedores = [(localizacao, pontuacao) for (produto, localizacao), pontuacao in pontuacoes_por_produto_localizacao.items() if produto == produto_nome]
+    # Se você precisar das pontuações totais, use pontuacoes_por_produto_localizacao
+    impactos_fornecedores = [
+        (localizacao, pontuacao) 
+        for (produto, localizacao), pontuacao in pontuacoes_por_produto_localizacao.items() 
+        if produto == produto_nome
+    ]
     
-    impactos_transportadoras = [(origem_percurso, pontuacao) for (transportadora, origem_percurso), pontuacao in pontuacoes_por_transportadora_origem.items()]
+    # Calcula os impactos das transportadoras
+    impactos_transportadoras = [
+        (origem_percurso, pontuacao) 
+        for (transportadora, origem_percurso), pontuacao in pontuacoes_por_transportadora_origem.items()
+    ]
     
+    # Calculando o impacto total
     impactos_totais = []
     for (localizacao, impacto_fornecedor) in impactos_fornecedores:
-        impacto_transporte = next((impacto for (origem_percurso, impacto) in impactos_transportadoras if origem_percurso == localizacao), 0)
+        impacto_transporte = next(
+            (impacto for (origem_percurso, impacto) in impactos_transportadoras if origem_percurso == localizacao),
+            0
+        )
         impacto_total = impacto_fornecedor + impacto_transporte
         impactos_totais.append((localizacao, impacto_total))
 
+    # Encontrar o menor impacto
     menor_impacto = min(impactos_totais, key=lambda x: x[1])
     localizacao_menor_impacto, impacto_total = menor_impacto
 
@@ -37,6 +51,8 @@ def escolher_produto():
                            produto=produto_nome,
                            impactos=impactos_totais, 
                            menor_impacto=(localizacao_menor_impacto, impacto_total))
+
+
 
 
 @app.route('/resumo_impactos')
@@ -104,7 +120,7 @@ def resumo_impactos():
 
 @app.route('/historico')
 def historico():
-    # Caminho relativo para garantir que o arquivo está na pasta modulo5_projeto1
+
     caminho_arquivo = './historico_de_escolhas.txt'
     
     try:
@@ -117,5 +133,7 @@ def historico():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
 
 
