@@ -1,5 +1,6 @@
 import datetime
 
+
 def registrar_escolha(produto_nome):
     with open("historico_de_escolhas.txt", "a") as arquivo:
         arquivo.write(f"{datetime.datetime.now()}: {produto_nome}\n")
