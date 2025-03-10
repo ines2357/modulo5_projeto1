@@ -2,8 +2,9 @@ import csv
 import collections
 
 def somar_pontuacoes_por_produto_localizacao():
-    # Dicionário para armazenar a soma total das pontuações por produto e localização
-    pontuacoes_por_produto_localizacao = collections.defaultdict(lambda: 0)
+    # Dicionários para armazenar a soma total das pontuações por produto e localização
+    pontuacoes_por_produto_localizacao = collections.defaultdict(int)
+    scores_fornecedores = collections.defaultdict(list)
     
     # Ler o ficheiro CSV
     with open('fornecedores.csv', newline='', encoding='utf-8') as file:
@@ -14,12 +15,16 @@ def somar_pontuacoes_por_produto_localizacao():
             localizacao = row[0]
             produto = row[1]
             chave = (produto, localizacao)
-            pontuacao_total = sum(map(int, row[2:]))  # Somar todas as pontuações
+            pontuacoes = list(map(int, row[2:]))  # Convertendo para lista de inteiros
+            pontuacao_total = sum(pontuacoes)  # Somar todas as pontuações
             
-            # Acumular a soma total
+            # Acumular a soma total das pontuações por produto e localização
             pontuacoes_por_produto_localizacao[chave] += pontuacao_total
-    
-    return pontuacoes_por_produto_localizacao
+            
+            # Acumular as pontuações individuais dos fornecedores
+            scores_fornecedores[chave].extend(pontuacoes)  # Armazenar as pontuações individuais
+            
+    return pontuacoes_por_produto_localizacao, scores_fornecedores
 
 
 
