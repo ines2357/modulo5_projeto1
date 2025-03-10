@@ -105,7 +105,7 @@ def resumo_impactos():
 @app.route('/historico')
 def historico():
     # Caminho relativo para garantir que o arquivo está na pasta modulo5_projeto1
-    caminho_arquivo = './modulo5_projeto1/historico_de_escolhas.txt'
+    caminho_arquivo = './historico_de_escolhas.txt'
     
     try:
         with open(caminho_arquivo, "r") as arquivo:
@@ -117,6 +117,5 @@ def historico():
 
 if __name__ == "__main__":
     app.run(debug=True)
-
 
 
