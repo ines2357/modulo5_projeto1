@@ -110,7 +110,7 @@ def historico():
     return render_template('historico.html', escolhas=escolhas)
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0")
 
 
 
